@@ -2,11 +2,18 @@ using Confluent.Kafka;
 using Gvz.Laboratory.PartyService;
 using Gvz.Laboratory.PartyService.Abstractions;
 using Gvz.Laboratory.PartyService.Kafka;
+using Gvz.Laboratory.PartyService.Middleware;
 using Gvz.Laboratory.PartyService.Repositories;
 using Gvz.Laboratory.PartyService.Services;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .CreateLogger();
 
 // Add services to the container.
 
@@ -35,6 +42,39 @@ var consumerConfig = new ConsumerConfig
 };
 builder.Services.AddSingleton(consumerConfig);
 
+builder.Services.AddSingleton<AddManufacturerKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<AddManufacturerKafkaConsumer>());
+
+builder.Services.AddSingleton<UpdateManufacturerKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<UpdateManufacturerKafkaConsumer>());
+
+builder.Services.AddSingleton<DeleteManufacturerKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<DeleteManufacturerKafkaConsumer>());
+
+builder.Services.AddSingleton<AddSupplierKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<AddSupplierKafkaConsumer>());
+
+builder.Services.AddSingleton<UpdateSupplierKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<UpdateSupplierKafkaConsumer>());
+
+builder.Services.AddSingleton<DeleteSupplierKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<DeleteSupplierKafkaConsumer>());
+
+builder.Services.AddSingleton<AddProductKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<AddProductKafkaConsumer>());
+
+builder.Services.AddSingleton<UpdateProductKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<UpdateProductKafkaConsumer>());
+
+builder.Services.AddSingleton<DeleteProductKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<DeleteProductKafkaConsumer>());
+
+builder.Services.AddSingleton<AddUserKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<AddUserKafkaConsumer>());
+
+builder.Services.AddSingleton<UpdateUserKafkaConsumer>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<UpdateUserKafkaConsumer>());
+
 builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
@@ -54,6 +94,8 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
