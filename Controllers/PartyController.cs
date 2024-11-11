@@ -9,17 +9,19 @@ namespace Gvz.Laboratory.PartyService.Controllers
     public class PartyController : ControllerBase
     {
         private readonly IPartyService _partyService;
+        private readonly IJwtProvider _jwtProvider;
 
-        public PartyController(IPartyService partyService)
+        public PartyController(IPartyService partyService, IJwtProvider jwtProvider)
         {
             _partyService = partyService;
+            _jwtProvider = jwtProvider;
         }
 
         [HttpPost]
         public async Task<ActionResult> CreatePartyAsync([FromBody] CreatePartyRequest createPartyRequest)
         {
-            var userId = Guid.NewGuid();//get the user Id from jwtToken
-
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var userId = _jwtProvider.GetUserIdFromToken(token);
             var id = await _partyService.CreatePartyAsync(Guid.NewGuid(),
                 createPartyRequest.BatchNumber,
                 createPartyRequest.DateOfReceipt,
@@ -63,8 +65,8 @@ namespace Gvz.Laboratory.PartyService.Controllers
                 p.Packaging,
                 p.Marking,
                 p.Result,
-                p.Note,
-                p.User.UserName)).ToList();
+                p.User.UserName,
+                p.Note)).ToList();
 
             var responseWrapper = new GetPartiesForPageResponseWrapper(response, numberParties);
 

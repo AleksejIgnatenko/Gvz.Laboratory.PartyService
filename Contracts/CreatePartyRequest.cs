@@ -2,7 +2,7 @@
 {
     public record CreatePartyRequest(
         int BatchNumber,
-        DateTime DateOfReceipt,
+        string DateOfReceipt,
         Guid ProductId,
         Guid SupplierId,
         Guid ManufacturerId,
@@ -11,8 +11,8 @@
         int TTN,
         string DocumentOnQualityAndSafety,
         string TestReport,
-        DateTime DateOfManufacture,
-        DateTime ExpirationDate,
+        string DateOfManufacture,
+        string ExpirationDate,
         string Packaging, 
         string Marking,
         string Result, 

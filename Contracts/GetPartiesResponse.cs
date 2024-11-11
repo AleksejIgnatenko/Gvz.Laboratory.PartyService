@@ -3,7 +3,7 @@
     public record GetPartiesResponse(
         Guid Id,
         int BatchNumber,
-        DateTime DateOfReceipt,
+        string DateOfReceipt,
         string ProductName,
         string SupplierName,
         string ManufacturerName,
@@ -12,12 +12,12 @@
         int TTN,
         string DocumentOnQualityAndSafety,
         string TestReport,
-        DateTime DateOfManufacture,
-        DateTime ExpirationDate,
+        string DateOfManufacture,
+        string ExpirationDate,
         string Packaging,
         string Marking,
         string Result,
-        string Note,
-        string UserName
+        string Responsible,
+        string Note
         );
 }

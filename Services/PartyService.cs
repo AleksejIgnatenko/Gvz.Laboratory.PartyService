@@ -16,9 +16,9 @@ namespace Gvz.Laboratory.PartyService.Services
             _partyKafkaProducer = partyKafkaProducer;
         }
 
-        public async Task<Guid> CreatePartyAsync(Guid id, int batchNumber, DateTime dateOfReceipt, Guid productId, Guid supplierId,
+        public async Task<Guid> CreatePartyAsync(Guid id, int batchNumber, string dateOfReceipt, Guid productId, Guid supplierId,
             Guid manufacturerId, double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
-            string testReport, DateTime dateOfManufacture, DateTime expirationDate, string packaging, string marking,
+            string testReport, string dateOfManufacture, string expirationDate, string packaging, string marking,
             string result, Guid userId, string note)
         {
             var (errors, party) = PartyModel.Create(id, batchNumber, dateOfReceipt, batchSize, sampleSize,
@@ -67,9 +67,9 @@ namespace Gvz.Laboratory.PartyService.Services
             return await _partyRepository.GetPartiesForPageAsync(pageNumber);
         }
 
-        public async Task<Guid> UpdatePartyAsync(Guid id, int batchNumber, DateTime dateOfReceipt, Guid productId, Guid supplierId,
+        public async Task<Guid> UpdatePartyAsync(Guid id, int batchNumber, string dateOfReceipt, Guid productId, Guid supplierId,
             Guid manufacturerId, double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
-            string testReport, DateTime dateOfManufacture, DateTime expirationDate, string packaging, string marking,
+            string testReport, string dateOfManufacture, string expirationDate, string packaging, string marking,
             string result, string note)
         {
             var (errors, party) = PartyModel.Create(id, batchNumber, dateOfReceipt, batchSize, sampleSize,

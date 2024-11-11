@@ -1,6 +1,7 @@
 using Confluent.Kafka;
 using Gvz.Laboratory.PartyService;
 using Gvz.Laboratory.PartyService.Abstractions;
+using Gvz.Laboratory.PartyService.Infrastructure;
 using Gvz.Laboratory.PartyService.Kafka;
 using Gvz.Laboratory.PartyService.Middleware;
 using Gvz.Laboratory.PartyService.Repositories;
@@ -83,6 +84,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPartyService, PartyService>();
 builder.Services.AddScoped<IPartyRepository, PartyRepository>();
 
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -102,5 +105,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(x =>
+{
+    x.WithHeaders().AllowAnyHeader();
+    x.WithOrigins("http://localhost:3000");
+    x.WithMethods().AllowAnyMethod();
+});
 
 app.Run();

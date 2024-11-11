@@ -9,7 +9,7 @@ namespace Gvz.Laboratory.PartyService.Models
     {
         public Guid Id { get; }
         public int BatchNumber { get; }
-        public DateTime DateOfReceipt { get; }
+        public string DateOfReceipt { get; }
         public ProductModel Product { get; } = new ProductModel();
         public SupplierModel Supplier { get; } = new SupplierModel();
         public ManufacturerModel Manufacturer { get; } = new ManufacturerModel();
@@ -18,17 +18,17 @@ namespace Gvz.Laboratory.PartyService.Models
         public int TTN { get; }
         public string DocumentOnQualityAndSafety { get; } = string.Empty;
         public string TestReport { get; } = string.Empty;
-        public DateTime DateOfManufacture { get; }
-        public DateTime ExpirationDate { get; }
+        public string DateOfManufacture { get; }
+        public string ExpirationDate { get; }
         public string Packaging { get; } = string.Empty;
         public string Marking { get; } = string.Empty;
         public string Result { get; } = string.Empty;
         public string Note { get; } = string.Empty;
         public UserModel User { get; } = new UserModel();
 
-        public PartyModel(Guid id, int batchNumber, DateTime dateOfReceipt,
+        public PartyModel(Guid id, int batchNumber, string dateOfReceipt,
             double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
-            string testReport, DateTime dateOfManufacture, DateTime expirationDate, string packaging, string marking,
+            string testReport, string dateOfManufacture, string expirationDate, string packaging, string marking,
             string result, string note)
         {
             Id = id;
@@ -48,9 +48,9 @@ namespace Gvz.Laboratory.PartyService.Models
             Note = note;
         }
 
-        public PartyModel(Guid id, int batchNumber, DateTime dateOfReceipt, ProductModel product, SupplierModel supplier,
+        public PartyModel(Guid id, int batchNumber, string dateOfReceipt, ProductModel product, SupplierModel supplier,
             ManufacturerModel manufacturer, double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
-            string testReport, DateTime dateOfManufacture, DateTime expirationDate, string packaging, string marking,
+            string testReport, string dateOfManufacture, string expirationDate, string packaging, string marking,
             string result, string note, UserModel user)
         {
             Id = id;
@@ -73,9 +73,9 @@ namespace Gvz.Laboratory.PartyService.Models
             User = user;
         }
 
-        public static (Dictionary<string, string> errors, PartyModel party) Create(Guid id, int batchNumber, DateTime dateOfReceipt,
+        public static (Dictionary<string, string> errors, PartyModel party) Create(Guid id, int batchNumber, string dateOfReceipt,
             double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
-            string testReport, DateTime dateOfManufacture, DateTime expirationDate, string packaging, string marking,
+            string testReport, string dateOfManufacture, string expirationDate, string packaging, string marking,
             string result, string note, bool useValidation = true)
         {
             Dictionary<string, string> errors = new Dictionary<string, string>();
@@ -98,9 +98,9 @@ namespace Gvz.Laboratory.PartyService.Models
             return (errors, party);
         }
 
-        public static (Dictionary<string, string> errors, PartyModel party) Create(Guid id, int batchNumber, DateTime dateOfReceipt, ProductModel product, SupplierModel supplier,
+        public static (Dictionary<string, string> errors, PartyModel party) Create(Guid id, int batchNumber, string dateOfReceipt, ProductModel product, SupplierModel supplier,
             ManufacturerModel manufacturer, double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
-            string testReport, DateTime dateOfManufacture, DateTime expirationDate, string packaging, string marking, 
+            string testReport, string dateOfManufacture, string expirationDate, string packaging, string marking, 
             string result, string note, UserModel user, bool useValidation = true)
         {
             Dictionary<string, string> errors = new Dictionary<string, string>();

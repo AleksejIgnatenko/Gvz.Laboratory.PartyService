@@ -36,10 +36,10 @@ namespace Gvz.Laboratory.PartyService.Repositories
                 ?? throw new RepositoryException("Поставщик не найден");
 
             var existingManufacturer = await _manufacturerRepository.GetManufacturerByIdAsync(manufacturerId)
-                ?? throw new RepositoryException("Производитель не найден не найден");
+                ?? throw new RepositoryException("Производитель не найден");
 
             var existingUser = await _userRepository.GetUserByIdAsync(userId)
-                ?? throw new RepositoryException("Пользователь не найден не найден");
+                ?? throw new RepositoryException("Пользователь не найден");
 
             var partyEntity = new PartyEntity
             {
@@ -98,6 +98,7 @@ namespace Gvz.Laboratory.PartyService.Repositories
                     .Include(p => p.Product)
                     .Include(p => p.Supplier)
                     .Include(p => p.Manufacturer)
+                    .Include(p =>p.User)
                     .OrderByDescending(p => p.DateCreate)
                     .Skip(pageNumber * 20)
                     .Take(20)
@@ -111,6 +112,7 @@ namespace Gvz.Laboratory.PartyService.Repositories
                     .Include(p => p.Product)
                     .Include(p => p.Supplier)
                     .Include(p => p.Manufacturer)
+                    .Include(p => p.User)
                     .OrderByDescending(p => p.DateCreate)
                     .Skip(pageNumber * 20)
                     .Take(20)
