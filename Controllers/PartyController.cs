@@ -21,7 +21,9 @@ namespace Gvz.Laboratory.PartyService.Controllers
         public async Task<ActionResult> CreatePartyAsync([FromBody] CreatePartyRequest createPartyRequest)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
             var userId = _jwtProvider.GetUserIdFromToken(token);
+
             var id = await _partyService.CreatePartyAsync(Guid.NewGuid(),
                 createPartyRequest.BatchNumber,
                 createPartyRequest.DateOfReceipt,
@@ -52,6 +54,7 @@ namespace Gvz.Laboratory.PartyService.Controllers
             var response = parties.Select(p => new GetPartiesResponse(p.Id,
                 p.BatchNumber,
                 p.DateOfReceipt,
+                p.Product.Id,
                 p.Product.ProductName,
                 p.Supplier.SupplierName,
                 p.Manufacturer.ManufacturerName,
@@ -65,7 +68,7 @@ namespace Gvz.Laboratory.PartyService.Controllers
                 p.Packaging,
                 p.Marking,
                 p.Result,
-                p.User.UserName,
+                p.User.Surname,
                 p.Note)).ToList();
 
             var responseWrapper = new GetPartiesForPageResponseWrapper(response, numberParties);

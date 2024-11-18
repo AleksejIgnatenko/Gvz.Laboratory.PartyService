@@ -54,7 +54,7 @@ namespace Gvz.Laboratory.PartyService.Services
                 Result = partyModel.Result,
                 Note = partyModel.Note,
                 UserId = partyModel.User.Id,
-                UserName = partyModel.User.UserName,
+                Surname = partyModel.User.Surname,
             };
 
             await _partyKafkaProducer.SendToKafkaAsync(partyDto, "add-party-topic");
@@ -105,7 +105,7 @@ namespace Gvz.Laboratory.PartyService.Services
                 Result = partyModel.Result,
                 Note = partyModel.Note,
                 UserId = partyModel.User.Id,
-                UserName = partyModel.User.UserName,
+                Surname = partyModel.User.UserName,
             };
 
             await _partyKafkaProducer.SendToKafkaAsync(partyDto, "update-party-topic");

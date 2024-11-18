@@ -84,8 +84,8 @@ namespace Gvz.Laboratory.PartyService.Repositories
                 partyEntity.Packaging,
                 partyEntity.Marking,
                 partyEntity.Result,
-                partyEntity.Note,
                 UserModel.Create(partyEntity.User.Id, partyEntity.User.Surname, partyEntity.User.UserName, partyEntity.User.Patronymic),
+                partyEntity.Note,
                 false).party;
 
             return partyModel;
@@ -138,8 +138,8 @@ namespace Gvz.Laboratory.PartyService.Repositories
                 p.Packaging,
                 p.Marking,
                 p.Result,
-                p.Note,
                 UserModel.Create(p.User.Id, p.User.Surname, p.User.UserName, p.User.Patronymic),
+                p.Note,
                 false).party).ToList();
 
             return (parties, numberParties);
@@ -195,8 +195,8 @@ namespace Gvz.Laboratory.PartyService.Repositories
                 existingParty.Packaging,
                 existingParty.Marking,
                 existingParty.Result,
-                existingParty.Note,
                 UserModel.Create(existingParty.User.Id, existingParty.User.Surname, existingParty.User.UserName, existingParty.User.Patronymic),
+                existingParty.Note,
                 false).party;
 
             return partyModel;

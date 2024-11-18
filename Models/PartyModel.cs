@@ -23,8 +23,8 @@ namespace Gvz.Laboratory.PartyService.Models
         public string Packaging { get; } = string.Empty;
         public string Marking { get; } = string.Empty;
         public string Result { get; } = string.Empty;
-        public string Note { get; } = string.Empty;
         public UserModel User { get; } = new UserModel();
+        public string Note { get; } = string.Empty;
 
         public PartyModel(Guid id, int batchNumber, string dateOfReceipt,
             double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
@@ -51,7 +51,7 @@ namespace Gvz.Laboratory.PartyService.Models
         public PartyModel(Guid id, int batchNumber, string dateOfReceipt, ProductModel product, SupplierModel supplier,
             ManufacturerModel manufacturer, double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
             string testReport, string dateOfManufacture, string expirationDate, string packaging, string marking,
-            string result, string note, UserModel user)
+            string result, UserModel user, string note)
         {
             Id = id;
             BatchNumber = batchNumber;
@@ -101,12 +101,12 @@ namespace Gvz.Laboratory.PartyService.Models
         public static (Dictionary<string, string> errors, PartyModel party) Create(Guid id, int batchNumber, string dateOfReceipt, ProductModel product, SupplierModel supplier,
             ManufacturerModel manufacturer, double batchSize, double sampleSize, int ttn, string documentOnQualityAndSafety,
             string testReport, string dateOfManufacture, string expirationDate, string packaging, string marking, 
-            string result, string note, UserModel user, bool useValidation = true)
+            string result, UserModel user, string note,  bool useValidation = true)
         {
             Dictionary<string, string> errors = new Dictionary<string, string>();
 
             PartyModel party = new PartyModel(id, batchNumber, dateOfReceipt, product, supplier, manufacturer, batchSize, sampleSize,
-                ttn, documentOnQualityAndSafety, testReport, dateOfManufacture, expirationDate, packaging, marking, result, note, user);
+                ttn, documentOnQualityAndSafety, testReport, dateOfManufacture, expirationDate, packaging, marking, result, user, note);
 
             if (!useValidation) { return (errors, party); }
 

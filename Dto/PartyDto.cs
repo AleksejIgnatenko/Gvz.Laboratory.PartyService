@@ -23,6 +23,6 @@
         public string Result { get; set; } = string.Empty;
         public string Note { get; set; } = string.Empty;
         public Guid UserId { get; set; }
-        public string UserName { get; set; } = string.Empty;
+        public string Surname { get; set; } = string.Empty;
     }
 }
