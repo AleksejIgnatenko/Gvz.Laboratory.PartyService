@@ -54,7 +54,6 @@ namespace Gvz.Laboratory.PartyService.Controllers
             var response = parties.Select(p => new GetPartiesResponse(p.Id,
                 p.BatchNumber,
                 p.DateOfReceipt,
-                p.Product.Id,
                 p.Product.ProductName,
                 p.Supplier.SupplierName,
                 p.Manufacturer.ManufacturerName,

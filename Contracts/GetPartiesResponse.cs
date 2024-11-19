@@ -4,7 +4,6 @@
         Guid Id,
         int BatchNumber,
         string DateOfReceipt,
-        Guid ProductId,
         string ProductName,
         string SupplierName,
         string ManufacturerName,
