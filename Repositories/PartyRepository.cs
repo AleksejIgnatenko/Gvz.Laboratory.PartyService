@@ -43,7 +43,7 @@ namespace Gvz.Laboratory.PartyService.Repositories
 
             var partyEntity = new PartyEntity
             {
-                Id = party.Id,
+                Id = party.Id, 
                 BatchNumber = party.BatchNumber,
                 DateOfReceipt = party.DateOfReceipt,
                 Product = existingProduct,
@@ -158,6 +158,13 @@ namespace Gvz.Laboratory.PartyService.Repositories
 
             var existingManufacturer = await _manufacturerRepository.GetManufacturerByIdAsync(manufacturerId)
                 ?? throw new RepositoryException("Производитель не найден не найден");
+
+            var existingSupplierName = await _context.Parties
+            .FirstOrDefaultAsync(p => (p.BatchNumber == party.BatchNumber) && (p.BatchNumber != existingParty.BatchNumber));
+            if (existingSupplierName != null)
+            {
+                throw new RepositoryException("Партия с таким номером партии уже существеут.");
+            }
 
             existingParty.BatchNumber = party.BatchNumber;
             existingParty.DateOfReceipt = party.DateOfReceipt;

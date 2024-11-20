@@ -21,6 +21,7 @@ namespace Gvz.Laboratory.PartyService.Controllers
         public async Task<ActionResult> CreatePartyAsync([FromBody] CreatePartyRequest createPartyRequest)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            Console.WriteLine(createPartyRequest.DateOfReceipt);
 
             var userId = _jwtProvider.GetUserIdFromToken(token);
 
