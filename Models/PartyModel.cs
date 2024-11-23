@@ -1,7 +1,5 @@
-﻿
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using Gvz.Laboratory.PartyService.Validations;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Gvz.Laboratory.PartyService.Models
 {

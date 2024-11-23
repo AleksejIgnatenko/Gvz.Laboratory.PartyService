@@ -1,5 +1,6 @@
 ﻿using Gvz.Laboratory.PartyService.Abstractions;
 using Gvz.Laboratory.PartyService.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gvz.Laboratory.PartyService.Controllers
@@ -73,6 +74,46 @@ namespace Gvz.Laboratory.PartyService.Controllers
 
             var responseWrapper = new GetPartiesForPageResponseWrapper(response, numberParties);
 
+            return Ok(responseWrapper);
+        }
+
+        [HttpGet]
+        [Route("exportPartiesToExcel")]
+        [Authorize]
+        public async Task<ActionResult> ExportPartiesToExcelAsync()
+        {
+            var stream = await _partyService.ExportPartiesToExcelAsync();
+            var fileName = "Parties.xlsx";
+
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+        [HttpGet]
+        [Route("searchParties")]
+        [Authorize]
+        public async Task<ActionResult> SearchPartiesAsync(string searchQuery, int pageNumber)
+        {
+            var (parties, numberParties) = await _partyService.SearchPartiesAsync(searchQuery, pageNumber);
+            var response = parties.Select(p => new GetPartiesResponse(p.Id,
+                 p.BatchNumber,
+                 p.DateOfReceipt,
+                 p.Product.ProductName,
+                 p.Supplier.SupplierName,
+                 p.Manufacturer.ManufacturerName,
+                 p.BatchSize,
+                 p.SampleSize,
+                 p.TTN,
+                 p.DocumentOnQualityAndSafety,
+                 p.TestReport,
+                 p.DateOfManufacture,
+                 p.ExpirationDate,
+                 p.Packaging,
+                 p.Marking,
+                 p.Result,
+                 p.User.Surname,
+                 p.Note)).ToList();
+
+            var responseWrapper = new GetPartiesForPageResponseWrapper(response, numberParties);
             return Ok(responseWrapper);
         }
 

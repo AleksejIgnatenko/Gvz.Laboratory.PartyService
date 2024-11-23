@@ -145,6 +145,116 @@ namespace Gvz.Laboratory.PartyService.Repositories
             return (parties, numberParties);
         }
 
+        public async Task<List<PartyModel>> GetPartiesAsync()
+        {
+            var partyEntities = await _context.Parties
+                    .AsNoTracking()
+                    .Include(p => p.Product)
+                    .Include(p => p.Supplier)
+                    .Include(p => p.Manufacturer)
+                    .Include(p => p.User)
+                    .OrderByDescending(p => p.DateCreate)
+                    .Take(20)
+                    .ToListAsync();
+
+
+            var parties = partyEntities.Select(p => PartyModel.Create(
+                p.Id,
+                p.BatchNumber,
+                p.DateOfReceipt,
+                ProductModel.Create(p.Product.Id, p.Product.ProductName),
+                SupplierModel.Create(p.Supplier.Id, p.Supplier.SupplierName),
+                ManufacturerModel.Create(p.Manufacturer.Id, p.Manufacturer.ManufacturerName),
+                p.BatchSize,
+                p.SampleSize,
+                p.TTN,
+                p.DocumentOnQualityAndSafety,
+                p.TestReport,
+                p.DateOfManufacture,
+                p.ExpirationDate,
+                p.Packaging,
+                p.Marking,
+                p.Result,
+                UserModel.Create(p.User.Id, p.User.Surname, p.User.UserName, p.User.Patronymic),
+                p.Note,
+                false).party).ToList();
+
+            return parties;
+        }
+
+        public async Task<(List<PartyModel> parties, int numberParties)> SearchPartiesAsync(string searchQuery, int pageNumber)
+        {
+            var partyEntities = await _context.Parties
+                .AsNoTracking()
+                .Where(p =>
+                    p.BatchNumber.ToString().Contains(searchQuery) ||
+                    p.DateOfReceipt.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Product.ProductName.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Supplier.SupplierName.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Manufacturer.ManufacturerName.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.BatchSize.ToString().Contains(searchQuery) ||
+                    p.SampleSize.ToString().Contains(searchQuery) ||
+                    p.TTN.ToString().Contains(searchQuery) ||
+                    p.DocumentOnQualityAndSafety.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.TestReport.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.DateOfManufacture.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.ExpirationDate.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Packaging.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Marking.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Result.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Note.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.User.UserName.ToLower().Contains(searchQuery.ToLower())
+                )
+                .OrderByDescending(p => p.DateCreate)
+                .Skip(pageNumber * 20)
+                .Take(20)
+                .ToListAsync();
+
+            var numberParties = await _context.Parties
+                    .AsNoTracking()
+                    .CountAsync(p =>
+                    p.BatchNumber.ToString().Contains(searchQuery) ||
+                    p.DateOfReceipt.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Product.ProductName.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Supplier.SupplierName.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Manufacturer.ManufacturerName.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.BatchSize.ToString().Contains(searchQuery) ||
+                    p.SampleSize.ToString().Contains(searchQuery) ||
+                    p.TTN.ToString().Contains(searchQuery) ||
+                    p.DocumentOnQualityAndSafety.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.TestReport.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.DateOfManufacture.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.ExpirationDate.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Packaging.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Marking.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Result.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.Note.ToLower().Contains(searchQuery.ToLower()) ||
+                    p.User.UserName.ToLower().Contains(searchQuery.ToLower()));
+
+            var parties = partyEntities.Select(p => PartyModel.Create(
+                p.Id,
+                p.BatchNumber,
+                p.DateOfReceipt,
+                ProductModel.Create(p.Product.Id, p.Product.ProductName),
+                SupplierModel.Create(p.Supplier.Id, p.Supplier.SupplierName),
+                ManufacturerModel.Create(p.Manufacturer.Id, p.Manufacturer.ManufacturerName),
+                p.BatchSize,
+                p.SampleSize,
+                p.TTN,
+                p.DocumentOnQualityAndSafety,
+                p.TestReport,
+                p.DateOfManufacture,
+                p.ExpirationDate,
+                p.Packaging,
+                p.Marking,
+                p.Result,
+                UserModel.Create(p.User.Id, p.User.Surname, p.User.UserName, p.User.Patronymic),
+                p.Note,
+                false).party).ToList();
+
+            return (parties, numberParties);
+        }
+
         public async Task<PartyModel> UpdatePartyAsync(PartyModel party, Guid productId, Guid supplierId, Guid manufacturerId)
         {
             var existingParty = await _context.Parties.FirstOrDefaultAsync(p => p.Id == party.Id)
