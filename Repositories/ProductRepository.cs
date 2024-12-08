@@ -25,6 +25,7 @@ namespace Gvz.Laboratory.PartyService.Repositories
                 {
                     Id = product.Id,
                     ProductName = product.ProductName,
+                    UnitsOfMeasurement = product.UnitsOfMeasurement,
                 };
 
                 await _context.Products.AddAsync(productEntity);
@@ -47,7 +48,8 @@ namespace Gvz.Laboratory.PartyService.Repositories
             await _context.Products
                 .Where(p => p.Id == product.Id)
                 .ExecuteUpdateAsync(p => p
-                    .SetProperty(p => p.ProductName, product.ProductName));
+                    .SetProperty(p => p.ProductName, product.ProductName)
+                    .SetProperty(p => p.UnitsOfMeasurement, product.UnitsOfMeasurement));
 
             return product.Id;
         }

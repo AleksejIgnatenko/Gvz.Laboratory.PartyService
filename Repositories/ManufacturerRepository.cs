@@ -18,7 +18,7 @@ namespace Gvz.Laboratory.PartyService.Repositories
         public async Task<Guid> CreateManufacturerAsync(ManufacturerDto manufacturer)
         {
             var existingManufacturer = await _context.Manufacturers.FirstOrDefaultAsync(m => m.ManufacturerName.Equals(manufacturer.ManufacturerName));
-
+            Console.WriteLine("111111111111111111111111111111");
             if (existingManufacturer == null)
             {
 

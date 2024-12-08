@@ -19,10 +19,10 @@ namespace Gvz.Laboratory.PartyService.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager,Worker")]
         public async Task<ActionResult> CreatePartyAsync([FromBody] CreatePartyRequest createPartyRequest)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            Console.WriteLine(createPartyRequest.DateOfReceipt);
 
             var userId = _jwtProvider.GetUserIdFromToken(token);
 
@@ -49,10 +49,10 @@ namespace Gvz.Laboratory.PartyService.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> GetPartiesForPageAsync(int pageNumber)
         {
             var (parties, numberParties) = await _partyService.GetPartiesForPageAsync(pageNumber);
-
             var response = parties.Select(p => new GetPartiesResponse(p.Id,
                 p.BatchNumber,
                 p.DateOfReceipt,
@@ -118,6 +118,7 @@ namespace Gvz.Laboratory.PartyService.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Admin,Manager,Worker")]
         public async Task<ActionResult> UpdatePartyAsync(Guid id, [FromBody] UpdatePartyRequest updateProductRequest)
         {
             //var userId = Guid.NewGuid();//get the user Id from jwtToken or updateProductRequest
@@ -144,7 +145,8 @@ namespace Gvz.Laboratory.PartyService.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteProductAsync([FromBody] List<Guid> ids)
+        [Authorize(Roles = "Admin,Manager,Worker")]
+        public async Task<ActionResult> DeletePartyAsync([FromBody] List<Guid> ids)
         {
             if (ids == null || !ids.Any())
             {

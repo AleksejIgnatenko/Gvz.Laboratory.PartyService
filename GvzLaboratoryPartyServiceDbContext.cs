@@ -18,7 +18,17 @@ namespace Gvz.Laboratory.PartyService
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //configuration
+            base.OnModelCreating(modelBuilder);
+
+            var user = new UserEntity
+            {
+                Id = Guid.Parse("CA6456C9-6062-481B-89B1-FF53E954A027"),
+                Surname = "Admin",
+                UserName = "Admin",
+                Patronymic = "Admin",
+            };
+
+            modelBuilder.Entity<UserEntity>().HasData(user);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Gvz.Laboratory.PartyService.Validations
                 .NotEmpty().WithMessage("Протокол испытаний не может быть пустым");
 
             RuleFor(x => x.DateOfManufacture)
-                .Must((model, expirationDate) => CheckManufactureDateBeforeExpiration(model)).WithMessage("Дата производства должна быть меньше даты полечуния");
+                .Must((model, dateOfManufacture) => CheckDateOfReceiptBeforeDateOfManufacture(model)).WithMessage("Дата производства должна быть меньше даты полечуния");
 
             RuleFor(x => x.ExpirationDate)
                 .Must((model, expirationDate) => CheckManufactureDateBeforeExpiration(model)).WithMessage("Дата изготовления должна быть меньше срока годности");
